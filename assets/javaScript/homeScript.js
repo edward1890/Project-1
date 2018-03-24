@@ -1,5 +1,3 @@
-// Renamed javaScript from java 
-
 //Declare firebase obj. 
 var config = {
     apiKey: "AIzaSyB2w2Z0XxrOtqNiuXnheoco3l0Rq2_1Bhc",
@@ -16,26 +14,33 @@ firebase.initializeApp(config);
 //Call this magic database method
 var database = firebase.database(); 
 
-var searchResultID = 0; 
+// searchResultID is used to child nodes in the DB
+var searchResultID; 
+// searchResultID is set to 0 in the DB, initially. We retreive that value on page load.
+database.ref("aSearchResultCounter").on("value", function(snapshot){
+    searchResultID = snapshot.val(); 
+})
+
 
 //Click event for the main button on the landing page 
-$("#search-button").on("click", function(event){
-
-    searchResultID++; 
+$("#search-button").on("click", function(event){ 
 
     //Capture input string 
     var keyword = $("#search-text").val().trim(); 
 
     //Pass that string as the keyword into the query url. We're also using a proxy to side step CORS error. This will be removed when we go live. 
     var queryURL = "https://thingproxy.freeboard.io/fetch/" + "https://app.ticketmaster.com/discovery/v2/events.json?apikey=RoDgdYM6hvCYQYDMGjOgTU0jJBvdaXIg&city=denver&stateCode=CO&radius=50&keyword=" + keyword;
+    
+    //Retreive the updated searchResultID
+    database.ref("aSearchResultCounter").on("value", function(snapshot){
+        searchResultID = snapshot.val(); 
+    })
 
     //Make the ajax call
     $.ajax({
         method: "GET", 
         url: queryURL
     }).then(function(response){
-    
-        console.log(response)
         // Capture the part of the API results that contain the values we're looking for 
         var events = response._embedded.events;
         console.log(events)
@@ -43,7 +48,7 @@ $("#search-button").on("click", function(event){
         //Loop through these results, capture the values of interest, declare an object w/ those values and pass that object into the Firebase push method (sending them up to the DB)
         for (var i = 0; i < events.length; i++) {
 
-            // Capture values from the ajax call
+            // Capture standard values from the ajax call
             var name = events[i].name;
             var venue = events[i]._embedded.venues[0].name;
             var date = events[i].dates.start.localDate;
@@ -74,15 +79,15 @@ $("#search-button").on("click", function(event){
             }
         
             // Log em to test
-            console.log(name);
-            console.log(venue);
-            console.log(date); 
-            console.log(ticketsStart); 
-            console.log(buyTickets); 
-            console.log(image); 
-            console.log(generalInfo); 
-            console.log(notes); 
-            console.log("latitude: " + lat + ", Longitude: " + long);
+            // console.log(name);
+            // console.log(venue);
+            // console.log(date); 
+            // console.log(ticketsStart); 
+            // console.log(buyTickets); 
+            // console.log(image); 
+            // console.log(generalInfo); 
+            // console.log(notes); 
+            // console.log("latitude: " + lat + ", Longitude: " + long);
 
             //Temp. store them in an object
             var results = {
@@ -98,15 +103,19 @@ $("#search-button").on("click", function(event){
                 long: long
             };
 
-            // Pass that object to firebase 
-            database.ref("searchResult-" + searchResultID).push(results); 
+            // Pass that object to firebase w/ the concatenated ID 
+            database.ref("searchResult-" + searchResultID).push(results);
+            
+        }     
 
-        }
-
+    }).then(function(){
+        //Increment the ID
+        searchResultID++;
+        //Set the incremented ID in the DB
+        database.ref("aSearchResultCounter").set(searchResultID); 
         // Direct user to the results page 
-        location.assign("index.html")
-    
-    })     
+        location.assign("index.html"); 
+    })   
 
     
 
