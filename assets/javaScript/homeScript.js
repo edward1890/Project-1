@@ -19,6 +19,7 @@ var searchResultID;
 // searchResultID is set to 0 in the DB, initially. We retreive that value on page load.
 database.ref("aSearchResultCounter").on("value", function(snapshot){
     searchResultID = snapshot.val(); 
+    console.log(searchResultID); 
 })
 
 
@@ -36,6 +37,8 @@ $("#search-button").on("click", function(event){
         searchResultID = snapshot.val(); 
     })
 
+    console.log(searchResultID); 
+
     //Make the ajax call
     $.ajax({
         method: "GET", 
@@ -44,6 +47,10 @@ $("#search-button").on("click", function(event){
         // Capture the part of the API results that contain the values we're looking for 
         var events = response._embedded.events;
         console.log(events)
+
+        // Declare lat and long arrays. These will be populated during the loop below. 
+        var latArray = []; 
+        var longArray = []; 
 
         //Loop through these results, capture the values of interest, declare an object w/ those values and pass that object into the Firebase push method (sending them up to the DB)
         for (var i = 0; i < events.length; i++) {
@@ -55,7 +62,9 @@ $("#search-button").on("click", function(event){
             var buyTickets = events[i].url; 
             var image = events[i].images[1].url; 
             var lat = events[i]._embedded.venues[0].location.latitude;
-            var long = events[i]._embedded.venues[0].location.longitude; 
+            latArray.push(lat);
+            var long = events[i]._embedded.venues[0].location.longitude;
+            longArray.push(long); 
 
             // This info doesn't exit for all returns. Capture it, if the current return does. Error will throw otherwise. 
             if (events[i].priceRanges) {
@@ -88,6 +97,7 @@ $("#search-button").on("click", function(event){
             // console.log(generalInfo); 
             // console.log(notes); 
             // console.log("latitude: " + lat + ", Longitude: " + long);
+           
 
             //Temp. store them in an object
             var results = {
@@ -107,6 +117,10 @@ $("#search-button").on("click", function(event){
             database.ref("searchResult-" + searchResultID).push(results);
             
         }     
+
+        // Store lat and long arrays 
+        database.ref("searchResult-" + searchResultID + "/latArray").push(latArray)
+        database.ref("searchResult-" + searchResultID + "/longArray").push(longArray)
 
     }).then(function(){
         //Increment the ID

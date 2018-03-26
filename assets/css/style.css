@@ -11,3 +11,8 @@
     max-width: 1000px;
     padding: 40px;
   }
+
+  #map-location {
+    height: 500px; 
+    width: 100%; 
+  }

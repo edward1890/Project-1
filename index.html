@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
     <link rel="stylesheet" href="assets/css/style.css">
     <title>Results Page</title>
 </head>
@@ -20,7 +18,7 @@
                       <span class="icon-bar"></span>
                       <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">LocalShow</a>
+                    <a class="navbar-brand" href="Home.html">LocalShow</a>
                 </div>
               
                   <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -52,19 +50,7 @@
                     </div>
 
                     <div class="panel-body">
-                        <ul class="list-group" id="list-results">
-                            <!-- APPEND LIST RESULTS WITH BELOW FORMAT FOR BEST LOOK -->
-                            <li class="list-group-item">Cras justo odio</li>
-                            <li class="list-group-item">Dapibus ac facilisis in</li>
-                            <li class="list-group-item">Morbi leo risus</li>
-                            <li class="list-group-item">Porta ac consectetur ac</li>
-                            <li class="list-group-item">Vestibulum at eros</li>
-                            <li class="list-group-item">Cras justo odio</li>
-                            <li class="list-group-item">Dapibus ac facilisis in</li>
-                            <li class="list-group-item">Morbi leo risus</li>
-                            <li class="list-group-item">Porta ac consectetur ac</li>
-                            <li class="list-group-item">Vestibulum at eros</li>
-                        </ul>
+                        
                     </div>
                 </div>
             </div>
@@ -76,7 +62,7 @@
                     <div class="panel-body" id="map-location">
                             <!-- GENERATED MAP LOCATION HERE -->
                         <div class="text-center">
-                            <img width="500" src="https://maps.googleapis.com/maps/api/staticmap?center=Albany,+NY&zoom=13&scale=1&size=500x500&maptype=roadmap&format=png&visual_refresh=true" alt="Google Map of Albany, NY">
+                            
                         </div>
                     </div>
                 </div>
@@ -86,7 +72,10 @@
 
         </div>
      </div>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
 <script src="assets/javaScript/resultsScript.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2w2Z0XxrOtqNiuXnheoco3l0Rq2_1Bhc&callback=initMap">
+</script>
 </body>
 </html>
