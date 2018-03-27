@@ -32,9 +32,9 @@ $("#search-button").on("click", function(event){
     //Pass that string as the keyword into the query url. We're also using a proxy to side step CORS error. This will be removed when we go live. 
     var queryURL = "https://thingproxy.freeboard.io/fetch/" + "https://app.ticketmaster.com/discovery/v2/events.json?apikey=RoDgdYM6hvCYQYDMGjOgTU0jJBvdaXIg&city=denver&stateCode=CO&radius=50&keyword=" + keyword;
     
-    //Retreive the updated searchResultID
+    //Retreive the updated searchResultID and increment to match the counter 
     database.ref("aSearchResultCounter").on("value", function(snapshot){
-        searchResultID = snapshot.val(); 
+        searchResultID = snapshot.val() + 1; 
     })
 
     console.log(searchResultID); 
@@ -47,10 +47,6 @@ $("#search-button").on("click", function(event){
         // Capture the part of the API results that contain the values we're looking for 
         var events = response._embedded.events;
         console.log(events)
-
-        // Declare lat and long arrays. These will be populated during the loop below. 
-        var latArray = []; 
-        var longArray = []; 
 
         //Loop through these results, capture the values of interest, declare an object w/ those values and pass that object into the Firebase push method (sending them up to the DB)
         for (var i = 0; i < events.length; i++) {
@@ -123,10 +119,10 @@ $("#search-button").on("click", function(event){
         database.ref("searchResult-" + searchResultID + "/longArray").push(longArray)
 
     }).then(function(){
-        //Increment the ID
-        searchResultID++;
+
         //Set the incremented ID in the DB
         database.ref("aSearchResultCounter").set(searchResultID); 
+        
         // Direct user to the results page 
         location.assign("index.html"); 
     })   

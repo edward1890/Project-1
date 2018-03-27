@@ -22,9 +22,9 @@ var latLongArr = [];
 
 // searchResultID is set to 0 in the DB, initially. We retreive that value once on page load and again anytime the value is updated. 
 database.ref("aSearchResultCounter").on("value", function(snapshot){
+  
     searchResultID = snapshot.val();  
     console.log("Current search result ID: " + searchResultID); 
-
     // Retrieve keys for each of the search items
     // Then: listen for when an item is created 
     // Then: capture the lat and long values, push those values to the latLongArr 
@@ -56,11 +56,11 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
         latLongArr.push({lat: fbLat, lng: fbLong})
         console.log(latLongArr); 
 
-
         // Call the addMarker function once with each search item's coordinates 
         for (var i = 0; i < latLongArr.length; i++) {
             addMarker(map, latLongArr[i])
             }
+
     })
 })
 
@@ -70,7 +70,6 @@ var map;
 //Why is this being executed?
 // Initialize Google map 
 var initMap = function(position, json) {
-    console.log("Comment from inside body of initMap, which hasn't been invoked.")
     denver = {lat: 39.739234, lng: -104.984796};
     map = new google.maps.Map(document.getElementById('map-location'), {
     zoom: 11,
@@ -87,8 +86,15 @@ function addMarker(map, latLongArr) {
     // console.log(marker);
     };
 
+
 //Click event for the main button on the landing page 
 $("#search-button").on("click", function(event){ 
+    function clearMarkers(){
+        emptyArr = []; 
+        addMarker(map, emptyArr); 
+    };  
+
+    clearMarkers(); 
 
     event.preventDefault(); 
     
@@ -100,9 +106,9 @@ $("#search-button").on("click", function(event){
     //Pass that string as the keyword into the query url. We're also using a proxy to side step CORS error. This will be removed when we go live. 
     var queryURL = "https://thingproxy.freeboard.io/fetch/" + "https://app.ticketmaster.com/discovery/v2/events.json?apikey=RoDgdYM6hvCYQYDMGjOgTU0jJBvdaXIg&city=denver&stateCode=CO&radius=50&keyword=" + keyword;
     
-    //Retreive the updated searchResultID
+    //Retreive the updated searchResultID and increment to match the counter
     database.ref("aSearchResultCounter").on("value", function(snapshot){
-        searchResultID = snapshot.val(); 
+        searchResultID = snapshot.val() + 1; 
     })
 
     console.log(searchResultID); 
@@ -174,10 +180,10 @@ $("#search-button").on("click", function(event){
         }     
 
     }).then(function(){
-        //Increment the ID
-        searchResultID++;
+        
         //Set the incremented ID in the DB
         database.ref("aSearchResultCounter").set(searchResultID); 
+        
     })   
 })
 
