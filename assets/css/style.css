@@ -11,3 +11,8 @@
     max-width: 1000px;
     padding: 40px;
   }
+
+  .panel-body {
+    overflow: auto;
+    height: 470px;
+  }
