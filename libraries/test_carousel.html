@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Carousel Test</title>
+    
+    <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+    <div class="flipContainer">
+        <div class="flipper">
+            <div class="front"></div>
+            <div class="back"></div>
+        </div>
+
+    </div>
+
+    <div class=" body-scroll multiple-items">
+        <button type="button" class="slick-prev">Previous</button>
+        <div class=" slick-slider slick-slide slick-current slick-active slick-center item flipContainer">
+            <div class="flipper">
+                <div class="front">TEST</div>
+                <div class="back">
+                    <ul>
+                        <li>event 1</li>
+                        <li>when</li>
+                        <li>where</li>
+                        <li>$$</li>
+                        <button>buy</button>
+                    </ul>   
+                </div>
+            </div>
+
+            
+        </div>
+      
+        <div class=" slick-slider slick-slide slick-current slick-active slick-center item flipContainer">
+            <div class="flipper">
+                <div class="front">TEST</div>
+                <div class="back">
+                    <ul>
+                        <li>event 1</li>
+                        <li>when</li>
+                        <li>where</li>
+                        <li>$$</li>
+                        <button>buy</button>
+                    </ul>   
+                </div>
+            </div>
+        </div>
+
+        <div class=" slick-slider slick-slide slick-current slick-active slick-center item flipContainer">
+            <div class="flipper">
+                <div class="front">TEST</div>
+                <div class="back">
+                    <ul>
+                        <li>event 1</li>
+                        <li>when</li>
+                        <li>where</li>
+                        <li>$$</li>
+                        <button>buy</button>
+                    </ul>   
+                </div>
+            </div>
+        </div>
+
+        <div class=" slick-slider slick-slide slick-current slick-active slick-center item flipContainer">
+            <div class="flipper">
+                <div class="front">TEST</div>
+                <div class="back">
+                    <ul>
+                        <li>event 1</li>
+                        <li>when</li>
+                        <li>where</li>
+                        <li>$$</li>
+                        <button>buy</button>
+                    </ul>   
+                </div>
+            </div>
+        </div>
+
+        <div class=" slick-slider slick-slide slick-current slick-active slick-center item flipContainer">
+            <ul>
+                <li>event 5</li>
+                <li>when</li>
+                <li>where</li>
+                <li>$$</li>
+                <button>buy</button>
+            </ul>   
+        </div>
+        <button type="button" class="slick-next">Next</button>
+    </div>
+
+   
+   
+    <script type="text/javascript" src="slick/slick.min.js"></script> 
+    <!-- <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script> -->
+    <script type="text/javascript">
+    console.log('test 123')
+    
+    $(document).ready(function(){
+        $('.multiple-items').slick({
+        infinite: true,
+        slidesToShow: 6,
+        slidesToScroll: 6,
+        dots: true,
+        arrows: true,
+
+            });
+        });
+
+
+    </script>
+    
+</body>
+
+</html>

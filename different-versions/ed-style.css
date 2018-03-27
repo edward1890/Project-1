@@ -1,0 +1,60 @@
+.Absolute-Center {
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+  }
+
+  .Absolute-Center.is-Responsive {
+    width: 50%; 
+    height: 25%;
+    min-width: 400px;
+    max-width: 1000px;
+    padding: 40px;
+  }
+
+  body {
+    background-image: url("../images/rock-concert-background-7.jpg");
+  }
+  input[type="text"]{
+    background-color:gray !important;
+    color: black;
+    }
+
+    .panel-body {
+        background: black;
+    }
+    H1 {
+    color: white;
+    text-align: center;
+    }
+    .page-header {
+      background-color: black;
+      
+      text-align: center;
+    }
+    .panel {
+      background: darkgray;
+    
+    }
+  
+    H4 {
+      color: darkgray;
+      text-align: center;
+    }
+    H5 {
+      color: darkgray;
+    }
+    P {
+      text-align: right;
+      color: darkgray;
+    }
+    #header-link {
+      color: white;
+    }
+    
+    #header {
+      background: black;
+    }
+    #footer {
+      background: black;
+    }
