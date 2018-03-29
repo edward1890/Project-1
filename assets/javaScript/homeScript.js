@@ -114,10 +114,6 @@ $("#search-button").on("click", function(event){
             
         }     
 
-        // Store lat and long arrays 
-        database.ref("searchResult-" + searchResultID + "/latArray").push(latArray)
-        database.ref("searchResult-" + searchResultID + "/longArray").push(longArray)
-
     }).then(function(){
 
         //Set the incremented ID in the DB
@@ -125,6 +121,8 @@ $("#search-button").on("click", function(event){
         
         // Direct user to the results page 
         location.assign("index.html"); 
+
+        console.log("I'm here.")
     })   
 
     

@@ -1,3 +1,38 @@
+//Code that runs the carosel
+$(".multiple-items").slick({
+    dots: true,
+    arrows: true,
+    infinite: false,
+    speed: 300,
+    slidesToShow: 6,
+    slidesToScroll: 6,
+    responsive: [
+        {
+        breakpoint: 1024,
+        settings: {
+            slidesToShow: 3,
+            slidesToScroll: 3,
+            infinite: true,
+            dots: true
+        }
+        },
+        {
+        breakpoint: 600,
+        settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2
+        }
+        },
+        {
+        breakpoint: 480,
+        settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1
+        }
+        }
+    ]
+    });
+
 //Declare firebase obj. 
 var config = {
     apiKey: "AIzaSyB2w2Z0XxrOtqNiuXnheoco3l0Rq2_1Bhc",
@@ -20,7 +55,7 @@ var searchResultID;
 // Declare empty latLongArr, this is what will be passed into the addMarker function
 var latLongArr = []; 
 
-// searchResultID is set to 0 in the DB, initially. We retreive that value once on page load and again anytime the value is updated. 
+// searchResultID is set to 0 in the DB initially. We retreive that value once on page load and again anytime the value is updated. 
 database.ref("aSearchResultCounter").on("value", function(snapshot){
   
     searchResultID = snapshot.val();  
@@ -35,20 +70,48 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
 
         // Capture unique name of the search item
         var key = snapshot.key; 
+
+        //Constructor that will be called to create each search item instance
+        function Item (name, venue, date, ticketsStart, buyTickets, image, lat, long) {
+            this.name = name; 
+            this.venue = venue; 
+            this.date = date; 
+            this.ticketsStart = ticketsStart; 
+            this.buyTickets = buyTickets; 
+            this.image = image; 
+            this.lat = lat; 
+            this.long = long; 
+        } 
+
+        database.ref("searchResult-" + searchResultID + "/" + key).on("child_added", function(snapshot){
+            console.log("Snap Val: " + snapshot.name); 
+            
+            var searchItem = new Item();
+            
+
+        })
         
+        var buyTickets = database.ref('searchResult-' + searchResultID + "/" + key); 
+        console.log(buyTickets); 
+
+        buyTickets.on("value", function(snapshot){
+            console.log(snapshot.val().lat)
+        }) 
+
         // Capture the file path of the latitude and longitude
         var latPath = database.ref('searchResult-' + searchResultID + "/" + key  + "/lat"); 
         var longPath =  database.ref('searchResult-' + searchResultID + "/" + key  + "/long");
 
+        console.log(latPath); 
         //Declare variables to store each search item's lat and long values as they're fetched from Firebase 
         var fbLat; 
         var fbLong; 
 
         //Fetch the current search item's lat and long values, convert them from strings to floats 
-        database.ref(latPath).on("value", function(snapshot){
+        latPath.on("value", function(snapshot){
             fbLat = parseFloat(snapshot.val()); 
         })
-        database.ref(longPath).on("value", function(snapshot){
+        longPath.on("value", function(snapshot){
             fbLong = parseFloat(snapshot.val()); 
         })
 
@@ -60,6 +123,13 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
         for (var i = 0; i < latLongArr.length; i++) {
             addMarker(map, latLongArr[i])
             }
+
+        //Here we fetch the event information for each of the search items 
+        database.ref()
+
+        //Now we render the event info on the page
+        var flipContainer = $('<div class="flipContainer item">')
+        var flipperClass = $('<div class="flipper">')
 
     })
 })
@@ -187,5 +257,42 @@ $("#search-button").on("click", function(event){
     })   
 })
 
+$(document).ready(function(){
+//Code that runs the carosel
+$('.multiple-items').slick({
+    dots: true,
+    arrows: true,
+    infinite: false,
+    speed: 300,
+    slidesToShow: 6,
+    slidesToScroll: 6,
+    responsive: [
+        {
+        breakpoint: 1024,
+        settings: {
+            slidesToShow: 3,
+            slidesToScroll: 3,
+            infinite: true,
+            dots: true
+        }
+        },
+        {
+        breakpoint: 600,
+        settings: {
+            slidesToShow: 2,
+            slidesToScroll: 2
+        }
+        },
+        {
+        breakpoint: 480,
+        settings: {
+            slidesToShow: 1,
+            slidesToScroll: 1
+        }
+        }
+    ]
+    });
+
+})
 
 
