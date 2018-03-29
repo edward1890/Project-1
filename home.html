@@ -1,39 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="assets/css/style.css">
-    <title>Home Page</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="assets/css/animate.css" />
+        <link rel="stylesheet" href="assets/css/style.css">
+        <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Bungee+Shade" rel="stylesheet">
+        <title>LocalShow</title>
 </head>
+
 <body>
-        <!-- We might wrap it all in a container  -->
-        <div class="page-header">
-        <h1> LocalShow </h1>
-        </div>
-        <!-- But this should def. be in a container.-->
-        <div class="row">
-                <div class="Absolute-Center is-Responsive">
-                        <div class="col-md-12">
-                                <div class="panel panel-default">
-                                        <div class="panel-body">
-                                                <div class="input-group">
-                                                        <input type="text" class="form-control" id="search-text" placeholder="Search for...">
-                                                        <span class="input-group-btn">
-                                                                <button class="btn btn-default" role="button" id="search-button">Search</button>
-                                                                <!-- <button class="btn btn-primary" type="submit">Button</button> -->
-                                                        </span>
-                                                </div>
-                                         </div>
-                                 </div>
+
+<div class="m-scene scene-element scene-element--fadeInLeft" id="main">
+        <div class="container theme showcase">
+                <div class="jumbotron">
+                        <h1 class="main-title animated fadeInDown text-center">LocalShow</h1>
+                        <div>
+                                <div class="panel-body">
+                                        <div class="input-group  ">
+                                                <input type="text" class="form-control event-search" id="search-text" placeholder="Search for...">
+                                                <span class="input-group-btn ">
+                                                        <button class="btn btn-default" role="button" id="search-button">Search</button>
+                                                </span>
+                                        </div>
+                                </div>
+
                         </div>
+                        <span>
+                                <h2 class="bored text-center">BORED?!</h2>
+                                <p class="description text-center">Let us help you get off your couch and into a local event </p>
+                        </span>
                 </div>
+        </div>                
+</div>       
+
+<nav class="navbar navbar-default navbar-fixed-bottom" id="footer">
+        <div class="container-fluid">
+                <div class="navbar-header">
+                <h5>Team Kwee</h5>
+                </div>
+                <p class="copyright">Copyright@2018</p>
+              
         </div>
+</nav>
+        
+        
+        
+       
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="assets/javaScript/smoothState.js-master/jquery.smoothState.min.js"></script>
+
+<script type="text/javascript" src="assets/javaScript/slick/slick.min.js"></script>
+<script type="text/javascript" src="assets/javaScript/smoothState.js-master/jquery.smoothState.min.js"></script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
 <script src="assets/javaScript/homeScript.js"></script>
+</script>
 </body>
-</html> 
+
+</html>
