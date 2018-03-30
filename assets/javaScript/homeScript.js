@@ -19,12 +19,14 @@ var searchResultID;
 // searchResultID is set to 0 in the DB, initially. We retreive that value on page load.
 database.ref("aSearchResultCounter").on("value", function(snapshot){
     searchResultID = snapshot.val(); 
-    console.log(searchResultID); 
+    console.log("cur search reasult: " + searchResultID); 
 })
 
 
 //Click event for the main button on the landing page 
 $("#search-button").on("click", function(event){ 
+
+    event.preventDefault();
 
     //Capture input string 
     var keyword = $("#search-text").val().trim(); 
@@ -58,9 +60,7 @@ $("#search-button").on("click", function(event){
             var buyTickets = events[i].url; 
             var image = events[i].images[1].url; 
             var lat = events[i]._embedded.venues[0].location.latitude;
-            latArray.push(lat);
             var long = events[i]._embedded.venues[0].location.longitude;
-            longArray.push(long); 
 
             // This info doesn't exit for all returns. Capture it, if the current return does. Error will throw otherwise. 
             if (events[i].priceRanges) {

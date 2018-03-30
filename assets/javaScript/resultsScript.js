@@ -72,6 +72,7 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
         var key = snapshot.key; 
 
         //Constructor that will be called to create each search item instance
+        // Although it looks like this won't be necessary aferall 
         function Item (name, venue, date, ticketsStart, buyTickets, image, lat, long) {
             this.name = name; 
             this.venue = venue; 
@@ -83,20 +84,31 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
             this.long = long; 
         } 
 
-        database.ref("searchResult-" + searchResultID + "/" + key).on("child_added", function(snapshot){
-            console.log("Snap Val: " + snapshot.name); 
+        //Declare instance of the prototype 
+        var searchItem = new Item();
+        
+        database.ref("searchResult-" + searchResultID + "/" + key).on("value", function(snapshot){
+            console.log("Snap Name: " + snapshot.val().name); 
             
-            var searchItem = new Item();
-            
+           
+            searchItem.name = snapshot.val().name; 
+            searchItem.venue = snapshot.val().venue; 
+            searchItem.date = snapshot.val().date; 
+            searchItem.ticketsStart = snapshot.val().ticketsStart; 
+            searchItem.buyTickets = snapshot.val().buyTickets;
+            searchItem.image = snapshot.val().image;
+            searchItem.lat = snapshot.val().lat; 
+            searchItem.long = snapshot.val().long
 
         })
         
-        var buyTickets = database.ref('searchResult-' + searchResultID + "/" + key); 
-        console.log(buyTickets); 
+        // testing things
+        // database.ref('searchResult-' + searchResultID + "/" + key); 
+        // console.log(buyTickets); 
 
-        buyTickets.on("value", function(snapshot){
-            console.log(snapshot.val().lat)
-        }) 
+        // buyTickets.on("value", function(snapshot){
+        //     console.log(snapshot.val().lat)
+        // }) 
 
         // Capture the file path of the latitude and longitude
         var latPath = database.ref('searchResult-' + searchResultID + "/" + key  + "/lat"); 
@@ -159,12 +171,13 @@ function addMarker(map, latLongArr) {
 
 //Click event for the main button on the landing page 
 $("#search-button").on("click", function(event){ 
-    function clearMarkers(){
-        emptyArr = []; 
-        addMarker(map, emptyArr); 
-    };  
+    // Markers are cleared from the map with every new search 
+    // function clearMarkers(){
+    //     emptyArr = []; 
+    //     addMarker(map, emptyArr); 
+    // };  
 
-    clearMarkers(); 
+    // clearMarkers(); 
 
     event.preventDefault(); 
     
@@ -257,7 +270,7 @@ $("#search-button").on("click", function(event){
     })   
 })
 
-$(document).ready(function(){
+// $(document).ready(function(){
 //Code that runs the carosel
 $('.multiple-items').slick({
     dots: true,
@@ -293,6 +306,6 @@ $('.multiple-items').slick({
     ]
     });
 
-})
+// })
 
 
