@@ -82,21 +82,21 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
         var searchItem = {};
         
         database.ref("searchResult-" + searchResultID + "/" + key).on("value", function(snapshot){
-            console.log("Snap Name: " + snapshot.val().name); 
-           
+            
             searchItem.name = snapshot.val().name; 
             searchItem.venue = snapshot.val().venue; 
             searchItem.date = snapshot.val().date; 
             searchItem.ticketsStart = snapshot.val().ticketsStart; 
             searchItem.buyTickets = snapshot.val().buyTickets;
             searchItem.image = snapshot.val().image;
+            // lat and long need to be converted to a decimal 
             searchItem.lat = parseFloat(snapshot.val().lat); 
             searchItem.long = parseFloat(snapshot.val().long); 
 
         })
 
         //Test to confirm object built correctly 
-        console.log("The cur. sear" + searchItem); 
+        console.log("The cur. sear" +   searchItem); 
 
         //Update the array that will be passed into the function that renders the markers 
         latLongArr.push({lat: searchItem.lat, lng: searchItem.long})
@@ -111,10 +111,37 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
         database.ref()
 
         //Now we render the event info on the page
-        var flipContainer = $('<div class="flipContainer item">')
-        var flipperClass = $('<div class="flipper">')
+        // Please try not to cringe at the sight to this code
+        var flipContainer = $('<div class="flipContainer item">');
+
+        var flipperClass = $('<div class="flipper">');
+
+        var front = $('<div class="front" style="background-image: url(' + searchItem.image + ')"></div>');
+
+        var back = $('<div class="back">'); 
+
+        var evtList = $('<ul class="list-style">');
+
+        var evtName = $('<li>' + searchItem.name + '</li>');
+        var evtVenue = $('<li>' + searchItem.venue + '<li>')
+        var evtDate = $('<li>' + searchItem.date  + '</li>'); 
+        var evtTicketsAt = $('<li>' + searchItem.ticketsStart + '</li>;');
+        var evtBuyTics = $('<button><a href="'  + searchItem.buyTickets + '">Buy Tickets!</a></button');
+
+        $(evtList).append(evtName, evtVenue, evtDate, evtTicketsAt, evtBuyTics);
+
+        $(back).append(evtList);
+
+        $(flipperClass).prepend(back); 
+
+        $(flipperClass).prepend(front); 
+
+        $(flipContainer).append(flipperClass); 
+
+        $("#cardContainer").append(flipContainer); 
 
     })
+
 })
 
 //This is janky. It'll need to be refactored in a way that deals with the initMap function's invocation
@@ -145,7 +172,8 @@ function clearMarkers() {
     for(var i = 0; i < latLongArr.length; i++){
         latLongArr[i] = null;
     }
-    latLongArr.length = 0;
+    latLongArr.length = 0; 
+    addMarker(map, latLongArr); 
 };
 
 
