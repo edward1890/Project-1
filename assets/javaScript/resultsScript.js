@@ -58,6 +58,13 @@ var latLongArr = [];
 // searchResultID is set to 0 in the DB initially. We retreive that value once on page load and again anytime the value is updated. 
 database.ref("aSearchResultCounter").on("value", function(snapshot){
   
+    console.log(map); 
+
+    // Clear map on new search
+    clearMarkers();
+
+    console.log(latLongArr);    
+
     searchResultID = snapshot.val();  
     console.log("Current search result ID: " + searchResultID); 
     // Retrieve keys for each of the search items
@@ -71,25 +78,11 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
         // Capture unique name of the search item
         var key = snapshot.key; 
 
-        //Constructor that will be called to create each search item instance
-        // Although it looks like this won't be necessary aferall 
-        function Item (name, venue, date, ticketsStart, buyTickets, image, lat, long) {
-            this.name = name; 
-            this.venue = venue; 
-            this.date = date; 
-            this.ticketsStart = ticketsStart; 
-            this.buyTickets = buyTickets; 
-            this.image = image; 
-            this.lat = lat; 
-            this.long = long; 
-        } 
-
-        //Declare instance of the prototype 
-        var searchItem = new Item();
+        //Declare object that will temp. store the search item from firebase
+        var searchItem = {};
         
         database.ref("searchResult-" + searchResultID + "/" + key).on("value", function(snapshot){
             console.log("Snap Name: " + snapshot.val().name); 
-            
            
             searchItem.name = snapshot.val().name; 
             searchItem.venue = snapshot.val().venue; 
@@ -97,38 +90,16 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
             searchItem.ticketsStart = snapshot.val().ticketsStart; 
             searchItem.buyTickets = snapshot.val().buyTickets;
             searchItem.image = snapshot.val().image;
-            searchItem.lat = snapshot.val().lat; 
-            searchItem.long = snapshot.val().long
+            searchItem.lat = parseFloat(snapshot.val().lat); 
+            searchItem.long = parseFloat(snapshot.val().long); 
 
         })
-        
-        // testing things
-        // database.ref('searchResult-' + searchResultID + "/" + key); 
-        // console.log(buyTickets); 
 
-        // buyTickets.on("value", function(snapshot){
-        //     console.log(snapshot.val().lat)
-        // }) 
-
-        // Capture the file path of the latitude and longitude
-        var latPath = database.ref('searchResult-' + searchResultID + "/" + key  + "/lat"); 
-        var longPath =  database.ref('searchResult-' + searchResultID + "/" + key  + "/long");
-
-        console.log(latPath); 
-        //Declare variables to store each search item's lat and long values as they're fetched from Firebase 
-        var fbLat; 
-        var fbLong; 
-
-        //Fetch the current search item's lat and long values, convert them from strings to floats 
-        latPath.on("value", function(snapshot){
-            fbLat = parseFloat(snapshot.val()); 
-        })
-        longPath.on("value", function(snapshot){
-            fbLong = parseFloat(snapshot.val()); 
-        })
+        //Test to confirm object built correctly 
+        console.log("The cur. sear" + searchItem); 
 
         //Update the array that will be passed into the function that renders the markers 
-        latLongArr.push({lat: fbLat, lng: fbLong})
+        latLongArr.push({lat: searchItem.lat, lng: searchItem.long})
         console.log(latLongArr); 
 
         // Call the addMarker function once with each search item's coordinates 
@@ -147,12 +118,12 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
 })
 
 //This is janky. It'll need to be refactored in a way that deals with the initMap function's invocation
-var denver; 
+//  denver; 
 var map; 
 //Why is this being executed?
 // Initialize Google map 
-var initMap = function(position, json) {
-    denver = {lat: 39.739234, lng: -104.984796};
+initMap = function(position, json) {
+    var denver = {lat: 39.739234, lng: -104.984796};
     map = new google.maps.Map(document.getElementById('map-location'), {
     zoom: 11,
     center: denver
@@ -167,6 +138,15 @@ function addMarker(map, latLongArr) {
     marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
     // console.log(marker);
     };
+
+//Clear function
+// Currently not doing anything 
+function clearMarkers() {
+    for(var i = 0; i < latLongArr.length; i++){
+        latLongArr[i] = null;
+    }
+    latLongArr.length = 0;
+};
 
 
 //Click event for the main button on the landing page 
@@ -231,17 +211,6 @@ $("#search-button").on("click", function(event){
             if (events[i].pleaseNote) {
                 var notes = events[i].pleaseNote;
             } else { var notes = "No notes specified for this event." }
-        
-            // Log em to test
-            // console.log(name);
-            console.log(venue);
-            // console.log(date); 
-            // console.log(ticketsStart); 
-            // console.log(buyTickets); 
-            // console.log(image); 
-            // console.log(generalInfo); 
-            // console.log(notes); 
-            // console.log("latitude: " + lat + ", Longitude: " + long);
 
             //Temp. store them in an object
             var results = {
@@ -270,42 +239,5 @@ $("#search-button").on("click", function(event){
     })   
 })
 
-// $(document).ready(function(){
-//Code that runs the carosel
-$('.multiple-items').slick({
-    dots: true,
-    arrows: true,
-    infinite: false,
-    speed: 300,
-    slidesToShow: 6,
-    slidesToScroll: 6,
-    responsive: [
-        {
-        breakpoint: 1024,
-        settings: {
-            slidesToShow: 3,
-            slidesToScroll: 3,
-            infinite: true,
-            dots: true
-        }
-        },
-        {
-        breakpoint: 600,
-        settings: {
-            slidesToShow: 2,
-            slidesToScroll: 2
-        }
-        },
-        {
-        breakpoint: 480,
-        settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1
-        }
-        }
-    ]
-    });
-
-// })
 
 
