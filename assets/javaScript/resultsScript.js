@@ -53,12 +53,19 @@ var database = firebase.database();
 var searchResultID; 
 
 // Declare empty latLongArr, this is what will be passed into the addMarker function
-var latLongArr = [];
-var nameVenueDate = [];
+var latLongArr = []; 
+var nameVenueDate = []; // This array is for the map markers
 
 // searchResultID is set to 0 in the DB initially. We retreive that value once on page load and again anytime the value is updated. 
-database.ref("aSearchResultCounter").on("value", function(snapshot) {
+database.ref("aSearchResultCounter").on("value", function(snapshot){
   
+    console.log(map); 
+
+    // Clear map on new search
+    clearMarkers();
+
+    console.log(latLongArr);    
+
     searchResultID = snapshot.val();  
     console.log("Current search result ID: " + searchResultID); 
     // Retrieve keys for each of the search items
@@ -67,90 +74,41 @@ database.ref("aSearchResultCounter").on("value", function(snapshot) {
     // So: 
 
     // Listening for children on the current ID. This will fire once for each child added, so it's kind of working like a loop. This is good.
-    database.ref("searchResult-" + searchResultID).on("child_added", function(snapshot) {
+    database.ref("searchResult-" + searchResultID).on("child_added", function(snapshot){
 
         // Capture unique name of the search item
         var key = snapshot.key; 
 
-        //Constructor that will be called to create each search item instance
-        function Item (name, venue, date, ticketsStart, buyTickets, image, lat, long) {
-            this.name = name; 
-            this.venue = venue; 
-            this.date = date; 
-            this.ticketsStart = ticketsStart; 
-            this.buyTickets = buyTickets; 
-            this.image = image; 
-            this.lat = lat; 
-            this.long = long; 
-        } 
-
-        database.ref("searchResult-" + searchResultID + "/" + key).on("child_added", function(snapshot){
-            console.log("Snap Val: " + snapshot.name); 
-            
-            var searchItem = new Item();
-        })
+        //Declare object that will temp. store the search item from firebase
+        var searchItem = {};
         
-        var buyTickets = database.ref('searchResult-' + searchResultID + "/" + key); 
-        console.log(buyTickets); 
+        database.ref("searchResult-" + searchResultID + "/" + key).on("value", function(snapshot){
+            // console.log("Snap Name: " + snapshot.val().name); 
+           
+            searchItem.name = snapshot.val().name; 
+            searchItem.venue = snapshot.val().venue; 
+            searchItem.date = snapshot.val().date; 
+            searchItem.ticketsStart = snapshot.val().ticketsStart; 
+            searchItem.buyTickets = snapshot.val().buyTickets;
+            searchItem.image = snapshot.val().image;
+            searchItem.lat = parseFloat(snapshot.val().lat); 
+            searchItem.long = parseFloat(snapshot.val().long); 
 
-        buyTickets.on("value", function(snapshot){
-            console.log(snapshot.val().lat)
-        }) 
-
-        // Capture the file path of the latitude and longitude
-        var latPath = database.ref('searchResult-' + searchResultID + "/" + key  + "/lat"); 
-        var longPath =  database.ref('searchResult-' + searchResultID + "/" + key  + "/long");
-        var venPath = database.ref('searchResult-' + searchResultID + "/" + key  + "/venue");
-        var namePath = database.ref('searchResult-' + searchResultID + "/" + key  + "/name");
-        var datePath = database.ref('searchResult-' + searchResultID + "/" + key  + "/date");
-
-        console.log(latPath); 
-        //Declare variables to store each search item's lat and long values as they're fetched from Firebase 
-        var fbLat; 
-        var fbLong; 
-        var name; // These variables (naem, venue, date) will be use for the markers
-        var venue;
-        var date; 
-
-        //Fetch the current search item's lat and long values, convert them from strings to floats 
-        latPath.on("value", function(snapshot){
-            fbLat = parseFloat(snapshot.val()); 
-        })
-        longPath.on("value", function(snapshot){
-            fbLong = parseFloat(snapshot.val()); 
         })
 
-        // Getting other values to use for markers
-        venPath.on("value", function(snapshot) {
-            venue = snapshot.val();
-        })
-        namePath.on("value", function(snapshot) {
-            name = snapshot.val();
-        })
-        datePath.on("value", function(snapshot) {
-            date = snapshot.val();
-        })
-
+        //Test to confirm object built correctly 
+        console.log("The cur. sear" + searchItem); 
 
         //Update the array that will be passed into the function that renders the markers 
-        latLongArr.push({lat: fbLat, lng: fbLong})
-        console.log(latLongArr);
-        
-        // Update array with Name, venue, and date for markers
-        nameVenueDate.push({name: name, venue: venue, date: date});
-        console.log(nameVenueDate)
-        console.log(nameVenueDate[0].name)
-        console.log(nameVenueDate[0].venue)
-        console.log(nameVenueDate[0].date)
+        latLongArr.push({lat: searchItem.lat, lng: searchItem.long});
+        nameVenueDate.push({name: searchItem.name, venue: searchItem.venue, date: searchItem.date});  // pushing array to markers
+        console.log(latLongArr); 
+        console.log(nameVenueDate);
 
         // Call the addMarker function once with each search item's coordinates 
         for (var i = 0; i < latLongArr.length; i++) {
             addMarker(map, latLongArr[i])
             }
-
-        for (var i = 0; i < nameVenueDate; i++) {
-            addMarker(map, nameVenueDate[i])
-        }
 
         //Here we fetch the event information for each of the search items 
         database.ref()
@@ -163,12 +121,12 @@ database.ref("aSearchResultCounter").on("value", function(snapshot) {
 })
 
 //This is janky. It'll need to be refactored in a way that deals with the initMap function's invocation
-var denver; 
+//  denver; 
 var map; 
 //Why is this being executed?
 // Initialize Google map 
-var initMap = function(position, json) {
-    denver = {lat: 39.739234, lng: -104.984796};
+initMap = function(position, json) {
+    var denver = {lat: 39.739234, lng: -104.984796};
     map = new google.maps.Map(document.getElementById('map-location'), {
     zoom: 11,
     center: denver
@@ -176,7 +134,7 @@ var initMap = function(position, json) {
 };
 
 function addMarker(map, latLongArr) {
-    var html = "<div><strong>" + nameVenueDate.name + "</strong><br> Venue: " + nameVenueDate.venue + "<br> Date: " + nameVenueDate.date + "</div>"; // this is created for the markers when clicked, will display what event it is
+    var html = "<div><strong>" + nameVenueDate[0].name + "</strong><br> Venue: " + nameVenueDate[0].venue + "<br> Date: " + nameVenueDate[0].date + "</div>";
     var marker = new google.maps.Marker({
         position: new google.maps.LatLng(latLongArr),
         map: map
@@ -190,16 +148,26 @@ function addMarker(map, latLongArr) {
     });
 };
 
+//Clear function
+// Currently not doing anything 
+function clearMarkers() {
+    for(var i = 0; i < latLongArr.length; i++){
+        latLongArr[i] = null;
+    }
+    latLongArr.length = 0;
+};
+
 
 //Click event for the main button on the landing page 
 $("#search-button").on("click", function(event){ 
+    // Markers are cleared from the map with every new search 
     function clearMarkers(){
         emptyArr = []; 
-        addMarker(map, emptyArr); 
+        addMarker(map, emptyArr);
     };  
-
     clearMarkers(); 
-
+    
+    
     event.preventDefault(); 
     
     //Capture input string 
@@ -252,17 +220,6 @@ $("#search-button").on("click", function(event){
             if (events[i].pleaseNote) {
                 var notes = events[i].pleaseNote;
             } else { var notes = "No notes specified for this event." }
-        
-            // Log em to test
-            // console.log(name);
-            console.log(venue);
-            // console.log(date); 
-            // console.log(ticketsStart); 
-            // console.log(buyTickets); 
-            // console.log(image); 
-            // console.log(generalInfo); 
-            // console.log(notes); 
-            // console.log("latitude: " + lat + ", Longitude: " + long);
 
             //Temp. store them in an object
             var results = {
@@ -289,44 +246,6 @@ $("#search-button").on("click", function(event){
         database.ref("aSearchResultCounter").set(searchResultID); 
         
     })   
-})
-
-$(document).ready(function(){
-//Code that runs the carosel
-$('.multiple-items').slick({
-    dots: true,
-    arrows: true,
-    infinite: false,
-    speed: 300,
-    slidesToShow: 6,
-    slidesToScroll: 6,
-    responsive: [
-        {
-        breakpoint: 1024,
-        settings: {
-            slidesToShow: 3,
-            slidesToScroll: 3,
-            infinite: true,
-            dots: true
-        }
-        },
-        {
-        breakpoint: 600,
-        settings: {
-            slidesToShow: 2,
-            slidesToScroll: 2
-        }
-        },
-        {
-        breakpoint: 480,
-        settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1
-        }
-        }
-    ]
-    });
-
 })
 
 
