@@ -211,7 +211,7 @@ h5 {
   .front{
     z-index: 2;
     transform: rotateY(0deg);
-    background-image: url(images/CupDzZRWYAIUM4m.jpg);
+    /* background-image: url(images/CupDzZRWYAIUM4m.jpg); */
     background-size: cover;   
   } 
 
