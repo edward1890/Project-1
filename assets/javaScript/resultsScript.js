@@ -216,7 +216,7 @@ $("#search-button").on("click", function(event){
 
     event.preventDefault(); 
 
-    
+    // $("#cardContainer").empty();
     
     //Capture input string 
     var keyword = $("#search-text").val().trim(); 
@@ -293,7 +293,7 @@ $("#search-button").on("click", function(event){
         //Set the incremented ID in the DB
         database.ref("aSearchResultCounter").set(searchResultID); 
 
-        $("#cardContainer").empty();
+        
 
     })   
 })
