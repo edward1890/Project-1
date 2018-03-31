@@ -10,6 +10,9 @@
         <link rel="stylesheet" href="assets/css/style.css">
         <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Bungee+Shade" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        
         <title>LocalShow</title>
 </head>
 
@@ -32,10 +35,29 @@
                         </div>
                         <span>
                                 <h2 class="bored text-center">BORED?!</h2>
-                                <p class="description text-center">Let us help you get off your couch and into a local event </p>
+                                <p class="description text-center">Let us <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#needHelp">help</button> you get off your couch and into a local event </p>
 
                         </span>
-                        
+                        <!-- Modal -->
+                        <div class="modal fade" id="needHelp" role="dialog">
+                                <div class="modal-dialog">
+                                
+                                <!-- Modal content-->
+                                        <div class="modal-content">
+                                                <div class="modal-header">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title">Hook me Up!</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                        <p>Type in an event and search to see what's going on locally</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                </div>
+                                        </div>
+                                
+                                </div>
+                        </div>
                 </div>
         </div>                
 </div>       

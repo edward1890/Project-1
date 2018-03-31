@@ -134,7 +134,9 @@ initMap = function(position, json) {
 };
 
 function addMarker(map, latLongArr) {
+    
     // var html = "<div><strong>" + nameVenueDate[0].name + "</strong><br> Venue: " + nameVenueDate[0].venue + "<br> Date: " + nameVenueDate[0].date + "</div>";
+    // trying to do a for-loop so that the markers will show the correct popup when clicked
     for (var i = 0; i < nameVenueDate.length; i++) {
             console.log(nameVenueDate[i])
             var html = "<div><strong>" + nameVenueDate[i].name + "</strong><br> Venue: " + nameVenueDate[i].venue + "<br> Date: " + nameVenueDate[i].date + "</div>";
@@ -146,6 +148,7 @@ function addMarker(map, latLongArr) {
     });
     marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
 
+    // This puts a popup window above the marker when clicked
     var infowindow = new google.maps.InfoWindow();
     google.maps.event.addListener(marker, "click", function() {
         
