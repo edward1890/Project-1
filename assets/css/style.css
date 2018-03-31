@@ -19,6 +19,11 @@ width: 100%;
 /* -webkit-text-fill-color: transparent; */
 }
 
+.panel-body {
+  width: 45%; 
+  margin: auto;  
+}
+
 
  .jumbotron{
    position: absolute;

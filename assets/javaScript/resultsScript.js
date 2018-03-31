@@ -58,7 +58,7 @@ var latLongArr = [];
 // searchResultID is set to 0 in the DB initially. We retreive that value once on page load and again anytime the value is updated. 
 database.ref("aSearchResultCounter").on("value", function(snapshot){
     // Empty any previous results
-    $("#cardContainer").empty();
+    
   
     // Clear map on new search
     clearMarkers();
@@ -215,6 +215,8 @@ function clearMarkers() {
 $("#search-button").on("click", function(event){ 
 
     event.preventDefault(); 
+
+    
     
     //Capture input string 
     var keyword = $("#search-text").val().trim(); 
@@ -290,6 +292,8 @@ $("#search-button").on("click", function(event){
         
         //Set the incremented ID in the DB
         database.ref("aSearchResultCounter").set(searchResultID); 
+
+        $("#cardContainer").empty();
 
     })   
 })
