@@ -8,9 +8,10 @@
 /* Home Screen */
 .main-body{  
 /* color: #f35626; */
-position: relative;
+position: absolute;
 background-image: -webkit-linear-gradient(92deg,#f35626,#feab3a);
 z-index: 0;
+width: 100%;
 /* -webkit-text-fill-color: transparent; */
 }
 
@@ -23,7 +24,7 @@ z-index: 0;
    left:50%;
    transform: translate(-50%,-50%);
    /* background-color: rgb(255, 255, 255); */
-   background-image: url(images/rock-concert-background-7.jpg);
+    background-image: url(images/rock-concert-background-7.jpg);
    background-repeat: no-repeat;
    background-size: cover;
    z-index: 1;
@@ -32,6 +33,7 @@ z-index: 0;
 
  #footer {
   background: black;
+  width: 100%;
 }
 
 .copyright {
@@ -47,7 +49,7 @@ h5 {
  .event-search {
   background-image: -webkit-linear-gradient(92deg,#bbbbbb,#ffffff);
   /* background-color: rgb(90, 88, 88); */
-  color:white;
+  color:black;
  }
 
  placeholder {
@@ -59,18 +61,22 @@ h5 {
   /* background-color: rgb(68, 66, 66); */
   color:white;
  } 
+ #search-button {
+  background-image: -webkit-linear-gradient(92deg,#f35626,#feab3a);
+ }
  
  .main-title {
   color: #f35626;
   background-image: -webkit-linear-gradient(92deg,#f35626,#feab3a);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  font-size: 150px !important;
+  font-size: 120px;
   margin-top:13%;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 0px;
+  margin-right: 0px;
   font-family: 'Bungee Shade', cursive;
   font-weight: 600;
+  word-wrap: break-word;
 }
 
 .bored {
@@ -116,13 +122,13 @@ h5 {
  * Navbar
  */
 
-.navbar-brand {
+#nav-logo {
   padding-top: .75rem;
   padding-bottom: .75rem;
   font-size: 1rem;
   background-color: rgba(0, 0, 0, .25);
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
-  font-family: 'Bungee Shade', cursive;
+  font-family: 'Rajdhani', cursive;
   font-size: 35px;
   
 }
@@ -164,9 +170,9 @@ h5 {
 
   /* Map Panel */
 
-.map {
+/* .map {
   position: relative
-}
+} */
   .map-panel {
  position:absolute;
  left:20%;
@@ -189,8 +195,8 @@ h5 {
     }
 
   .flipContainer, .front, .back {
-    width: 175px;
-    height: 200px;
+    width: 150px;
+    height: 175px;
     border-radius: 5px;
   }
 
@@ -349,4 +355,55 @@ h5 {
     padding: 25px;
     font-family: 'Rajdhani', sans-serif;
     font-weight: bold;
+    word-wrap: break-word;
+    font-size: 75%;
   }
+ 
+  @media only screen and (max-width: 600px) {
+    .main-title {
+      color: #f35626;
+      background-image: -webkit-linear-gradient(92deg,#f35626,#feab3a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-size: 50px;
+      margin-top:13%;
+      margin-left: auto;
+      margin-right: auto;
+      font-family: 'Bungee Shade', cursive;
+      font-weight: 600;
+      word-wrap: break-word;
+      
+    }
+    .description {
+      /* font-family: 'Poiret One', cursive; */
+      font-size: 15px;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: bold;
+      font-size: 15px;
+      color: rgb(255, 255, 255);
+      }
+      #map-location {
+        height: 200px; 
+        width: 200px; 
+        margin-left:auto;
+        margin-right:auto;
+       
+      }
+      .map {
+        height: 200px;
+        width: 200px;
+      }
+      .flipContainer, .front, .back {
+        width: 75px;
+        height: 100px;
+        border-radius: 5px;
+      }  
+      .body-scroll{
+        width: 200px;
+        margin-left:auto;
+        margin-right:auto;
+      }
+      .list-style {
+        font-size: 40%;
+      }
+}
