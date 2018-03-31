@@ -17,11 +17,12 @@ var database = firebase.database();
 // searchResultID is used to child nodes in the DB
 var searchResultID; 
 // searchResultID is set to 0 in the DB, initially. We retreive that value on page load.
-database.ref("aSearchResultCounter").on("value", function(snapshot){
-    searchResultID = snapshot.val(); 
-    console.log("cur search reasult: " + searchResultID); 
+$(document).ready(function(){
+    database.ref("aSearchResultCounter").on("value", function(snapshot){
+        searchResultID = snapshot.val(); 
+        console.log("cur search reasult: " + searchResultID); 
+    })
 })
-
 
 //Click event for the main button on the landing page 
 $("#search-button").on("click", function(event){ 

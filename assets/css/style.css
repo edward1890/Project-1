@@ -203,10 +203,23 @@ h5 {
         
     }
 
-  .flipContainer, .front, .back {
+    .front, .back {
     width: 150px;
     height: 175px;
     border-radius: 5px;
+  }
+
+  .col-sm-12 {
+    margin-left: 2.5%; 
+    margin-bottom: 10%; 
+  }
+
+  .flipContainer {
+    width: 150px;
+    height: 175px;
+    float: left; 
+    border-radius: 5px;
+    margin: 1em; 
   }
 
   .flipper {

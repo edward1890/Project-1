@@ -1,37 +1,37 @@
 //Code that runs the carosel
-    $("#cardContainer").slick({
-        dots: true,
-        arrows: true,
-        infinite: false,
-        speed: 300,
-        slidesToShow: 6,
-        slidesToScroll: 6,
-        responsive: [
-            {
-            breakpoint: 1024,
-            settings: {
-                slidesToShow: 3,
-                slidesToScroll: 3,
-                infinite: true,
-                dots: true
-            }
-            },
-            {
-            breakpoint: 600,
-            settings: {
-                slidesToShow: 2,
-                slidesToScroll: 2
-            }
-            },
-            {
-            breakpoint: 480,
-            settings: {
-                slidesToShow: 1,
-                slidesToScroll: 1
-            }
-            }
-        ]
-        });
+    // $("#cardContainer").slick({
+    //     dots: true,
+    //     arrows: true,
+    //     infinite: false,
+    //     speed: 300,
+    //     slidesToShow: 6,
+    //     slidesToScroll: 6,
+    //     responsive: [
+    //         {
+    //         breakpoint: 1024,
+    //         settings: {
+    //             slidesToShow: 3,
+    //             slidesToScroll: 3,
+    //             infinite: true,
+    //             dots: true
+    //         }
+    //         },
+    //         {
+    //         breakpoint: 600,
+    //         settings: {
+    //             slidesToShow: 2,
+    //             slidesToScroll: 2
+    //         }
+    //         },
+    //         {
+    //         breakpoint: 480,
+    //         settings: {
+    //             slidesToShow: 1,
+    //             slidesToScroll: 1
+    //         }
+    //         }
+    //     ]
+    //     });
 
 //Declare firebase obj. 
 var config = {
@@ -57,8 +57,6 @@ var latLongArr = [];
 
 // searchResultID is set to 0 in the DB initially. We retreive that value once on page load and again anytime the value is updated. 
 database.ref("aSearchResultCounter").on("value", function(snapshot){
-    // Empty any previous results
-    
   
     // Clear map on new search
     clearMarkers();
@@ -130,9 +128,11 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
 
         $(flipContainer).append(flipperClass); 
 
-        $("#cardContainer").append(flipContainer); 
+        $("#cardContainer").append(flipContainer);
 
     })
+
+    
 
     // This is defined here in an effort to have the slick method apply to dynamically created elements. This function isn't being called. 
     function slickInit(){
@@ -216,12 +216,10 @@ $("#search-button").on("click", function(event){
 
     event.preventDefault(); 
 
-    
+    $("#cardContainer").empty(); 
     
     //Capture input string 
     var keyword = $("#search-text").val().trim(); 
-    // Empty the text box
-    $("#search-text").text("");
 
     //Pass that string as the keyword into the query url. We're also using a proxy to side step CORS error. This will be removed when we go live. 
     var queryURL = "https://thingproxy.freeboard.io/fetch/" + "https://app.ticketmaster.com/discovery/v2/events.json?apikey=RoDgdYM6hvCYQYDMGjOgTU0jJBvdaXIg&city=denver&stateCode=CO&radius=50&keyword=" + keyword;
@@ -293,7 +291,6 @@ $("#search-button").on("click", function(event){
         //Set the incremented ID in the DB
         database.ref("aSearchResultCounter").set(searchResultID); 
 
-        $("#cardContainer").empty();
 
     })   
 })
