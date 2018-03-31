@@ -32,12 +32,7 @@
     //         }
     //     ]
     //     });
-
-
-
-
-
-
+});
 
 //Declare firebase obj. 
 var config = {
