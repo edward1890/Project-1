@@ -1,37 +1,37 @@
-//Code that runs the carosel
-    $("#cardContainer").slick({
-        dots: true,
-        arrows: true,
-        infinite: false,
-        speed: 300,
-        slidesToShow: 6,
-        slidesToScroll: 6,
-        responsive: [
-            {
-            breakpoint: 1024,
-            settings: {
-                slidesToShow: 3,
-                slidesToScroll: 3,
-                infinite: true,
-                dots: true
-            }
-            },
-            {
-            breakpoint: 600,
-            settings: {
-                slidesToShow: 2,
-                slidesToScroll: 2
-            }
-            },
-            {
-            breakpoint: 480,
-            settings: {
-                slidesToShow: 1,
-                slidesToScroll: 1
-            }
-            }
-        ]
-        });
+//Code that is supposed to run the carosel, but doesn't in any kind of satisfactory way. 
+    // $("#cardContainer").slick({
+    //     dots: true,
+    //     arrows: true,
+    //     infinite: false,
+    //     speed: 300,
+    //     slidesToShow: 6,
+    //     slidesToScroll: 6,
+    //     responsive: [
+    //         {
+    //         breakpoint: 1024,
+    //         settings: {
+    //             slidesToShow: 3,
+    //             slidesToScroll: 3,
+    //             infinite: true,
+    //             dots: true
+    //         }
+    //         },
+    //         {
+    //         breakpoint: 600,
+    //         settings: {
+    //             slidesToShow: 2,
+    //             slidesToScroll: 2
+    //         }
+    //         },
+    //         {
+    //         breakpoint: 480,
+    //         settings: {
+    //             slidesToShow: 1,
+    //             slidesToScroll: 1
+    //         }
+    //         }
+    //     ]
+    //     });
 
 //Declare firebase obj. 
 var config = {
@@ -57,8 +57,6 @@ var latLongArr = [];
 
 // searchResultID is set to 0 in the DB initially. We retreive that value once on page load and again anytime the value is updated. 
 database.ref("aSearchResultCounter").on("value", function(snapshot){
-    // Empty any previous results
-    
   
     // Clear map on new search
     clearMarkers();
@@ -95,7 +93,7 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
 
         //Update the array that will be passed into the function that renders the markers 
         latLongArr.push({lat: searchItem.lat, lng: searchItem.long})
-        console.log(latLongArr); 
+        // console.log(latLongArr); 
 
         // Call the addMarker function once with each search item's coordinates 
         for (var i = 0; i < latLongArr.length; i++) {
@@ -103,7 +101,7 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
             }
 
         //Now we render the event info on the page
-        // Please try not to cringe at the sight to this code
+        // Please try not to cringe at the sight of this code
         var flipContainer = $('<div class="flipContainer item"></br>');
 
         var flipperClass = $('<div class="flipper">');
@@ -118,7 +116,7 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
         var evtDate = $('<li> Date: ' + searchItem.date  + '</li>'); 
         var evtTicketsAt = $('<li> Starting Tickets: ' + searchItem.ticketsStart + '</li>;');
 
-        var evtBuyTics = $('<button><a href="'  + searchItem.buyTickets + '">Buy Tickets!</a></button');
+        var evtBuyTics = $('<button><a href="'  + searchItem.buyTickets + '" target="_blank">Buy Tickets!</a></button');
 
         $(evtList).append(evtName, evtVenue, evtDate, evtTicketsAt, evtBuyTics);
 
@@ -130,7 +128,7 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
 
         $(flipContainer).append(flipperClass); 
 
-        $("#cardContainer").append(flipContainer); 
+        $("#cardContainer").append(flipContainer);
 
     })
 
@@ -182,6 +180,9 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
 
 // Mapping logic 
 var map; 
+var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'; 
+var labelIndex = 0; 
+
 
 // Initialize Google map 
 initMap = function(position, json) {
@@ -196,6 +197,7 @@ initMap = function(position, json) {
 function addMarker(map, latLongArr) {
     var marker = new google.maps.Marker({
         position: new google.maps.LatLng(latLongArr),
+        // label: labels[labelIndex++ % labels.length],
         map: map
     });
     marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
@@ -216,12 +218,10 @@ $("#search-button").on("click", function(event){
 
     event.preventDefault(); 
 
-    
+    $("#cardContainer").empty(); 
     
     //Capture input string 
     var keyword = $("#search-text").val().trim(); 
-    // Empty the text box
-    $("#search-text").text("");
 
     //Pass that string as the keyword into the query url. We're also using a proxy to side step CORS error. This will be removed when we go live. 
     var queryURL = "https://thingproxy.freeboard.io/fetch/" + "https://app.ticketmaster.com/discovery/v2/events.json?apikey=RoDgdYM6hvCYQYDMGjOgTU0jJBvdaXIg&city=denver&stateCode=CO&radius=50&keyword=" + keyword;
@@ -250,7 +250,7 @@ $("#search-button").on("click", function(event){
             var venue = events[i]._embedded.venues[0].name;
             var date = events[i].dates.start.localDate;
             var buyTickets = events[i].url; 
-            var image = events[i].images[1].url; 
+            var image = events[i].images[2].url; 
             var lat = events[i]._embedded.venues[0].location.latitude;
             var long = events[i]._embedded.venues[0].location.longitude; 
 
@@ -293,7 +293,6 @@ $("#search-button").on("click", function(event){
         //Set the incremented ID in the DB
         database.ref("aSearchResultCounter").set(searchResultID); 
 
-        $("#cardContainer").empty();
 
     })   
 })
