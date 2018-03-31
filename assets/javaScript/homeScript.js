@@ -75,9 +75,9 @@ $("#search-button").on("click", function(event){
             var lat = events[i]._embedded.venues[0].location.latitude;
             var long = events[i]._embedded.venues[0].location.longitude;
 
-            if (events[i].name == undefined) {
-                console.log("I'm here.")
-            }
+            // if (events[i].name == undefined) {
+            //     console.log("I'm here.")
+            // }
             
 
             // This info doesn't exit for all returns. Capture it, if the current return does. Error will throw otherwise. 

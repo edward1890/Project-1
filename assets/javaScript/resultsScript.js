@@ -216,6 +216,8 @@ $("#search-button").on("click", function(event){
 
     event.preventDefault(); 
 
+    
+
     // $("#cardContainer").empty();
     
     //Capture input string 
@@ -293,7 +295,7 @@ $("#search-button").on("click", function(event){
         //Set the incremented ID in the DB
         database.ref("aSearchResultCounter").set(searchResultID); 
 
-        
+        location.reload();
 
     })   
 })
