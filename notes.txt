@@ -1,0 +1,11 @@
+Commit often
+
+research git reset -- to reset back to a commit 
+
+git branch <branchName> -- creates branch 
+    git checkout <branchName> -- switches to branch 
+
+pull request, submitted when the branches are ready to merge 
+    managed in the github GUI
+
+1AMtheonly1    
