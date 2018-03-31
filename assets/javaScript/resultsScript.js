@@ -1,4 +1,4 @@
-//Code that runs the carosel
+//Code that is supposed to run the carosel, but doesn't in any kind of satisfactory way. 
     // $("#cardContainer").slick({
     //     dots: true,
     //     arrows: true,
@@ -116,7 +116,7 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
         var evtDate = $('<li> Date: ' + searchItem.date  + '</li>'); 
         var evtTicketsAt = $('<li> Starting Tickets: ' + searchItem.ticketsStart + '</li>;');
 
-        var evtBuyTics = $('<button><a href="'  + searchItem.buyTickets + '">Buy Tickets!</a></button');
+        var evtBuyTics = $('<button><a href="'  + searchItem.buyTickets + '" target="_blank">Buy Tickets!</a></button');
 
         $(evtList).append(evtName, evtVenue, evtDate, evtTicketsAt, evtBuyTics);
 
