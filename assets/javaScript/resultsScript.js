@@ -93,7 +93,7 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
 
         //Update the array that will be passed into the function that renders the markers 
         latLongArr.push({lat: searchItem.lat, lng: searchItem.long})
-        console.log(latLongArr); 
+        // console.log(latLongArr); 
 
         // Call the addMarker function once with each search item's coordinates 
         for (var i = 0; i < latLongArr.length; i++) {
@@ -101,7 +101,7 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
             }
 
         //Now we render the event info on the page
-        // Please try not to cringe at the sight to this code
+        // Please try not to cringe at the sight of this code
         var flipContainer = $('<div class="flipContainer item"></br>');
 
         var flipperClass = $('<div class="flipper">');
@@ -131,8 +131,6 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
         $("#cardContainer").append(flipContainer);
 
     })
-
-    
 
     // This is defined here in an effort to have the slick method apply to dynamically created elements. This function isn't being called. 
     function slickInit(){
@@ -182,6 +180,9 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
 
 // Mapping logic 
 var map; 
+var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'; 
+var labelIndex = 0; 
+
 
 // Initialize Google map 
 initMap = function(position, json) {
@@ -196,6 +197,7 @@ initMap = function(position, json) {
 function addMarker(map, latLongArr) {
     var marker = new google.maps.Marker({
         position: new google.maps.LatLng(latLongArr),
+        // label: labels[labelIndex++ % labels.length],
         map: map
     });
     marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
@@ -248,7 +250,7 @@ $("#search-button").on("click", function(event){
             var venue = events[i]._embedded.venues[0].name;
             var date = events[i].dates.start.localDate;
             var buyTickets = events[i].url; 
-            var image = events[i].images[1].url; 
+            var image = events[i].images[2].url; 
             var lat = events[i]._embedded.venues[0].location.latitude;
             var long = events[i]._embedded.venues[0].location.longitude; 
 
