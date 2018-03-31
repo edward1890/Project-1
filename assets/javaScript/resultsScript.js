@@ -1,9 +1,10 @@
 //Code that runs the carosel
-$(".multiple-items").slick({
+$(document).ready(function() {
+$('.multiple-items').slick({
     dots: true,
     arrows: true,
     infinite: false,
-    speed: 300,
+    // speed: 300,
     slidesToShow: 6,
     slidesToScroll: 6,
     responsive: [
@@ -12,7 +13,7 @@ $(".multiple-items").slick({
         settings: {
             slidesToShow: 3,
             slidesToScroll: 3,
-            infinite: true,
+            infinite: false,
             dots: true
         }
         },
@@ -20,18 +21,22 @@ $(".multiple-items").slick({
         breakpoint: 600,
         settings: {
             slidesToShow: 2,
-            slidesToScroll: 2
+            slidesToScroll: 2,
+            infinite: false,
         }
         },
         {
         breakpoint: 480,
         settings: {
             slidesToShow: 1,
-            slidesToScroll: 1
+            slidesToScroll: 1,
+            infinite: false,
         }
         }
     ]
     });
+
+});
 
 //Declare firebase obj. 
 var config = {
