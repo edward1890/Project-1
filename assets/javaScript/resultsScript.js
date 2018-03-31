@@ -1,37 +1,43 @@
 //Code that runs the carosel
-$(".multiple-items").slick({
-    dots: true,
-    arrows: true,
-    infinite: false,
-    speed: 300,
-    slidesToShow: 6,
-    slidesToScroll: 6,
-    responsive: [
-        {
-        breakpoint: 1024,
-        settings: {
-            slidesToShow: 3,
-            slidesToScroll: 3,
-            infinite: true,
-            dots: true
-        }
-        },
-        {
-        breakpoint: 600,
-        settings: {
-            slidesToShow: 2,
-            slidesToScroll: 2
-        }
-        },
-        {
-        breakpoint: 480,
-        settings: {
-            slidesToShow: 1,
-            slidesToScroll: 1
-        }
-        }
-    ]
-    });
+    // $("#cardContainer").slick({
+    //     dots: true,
+    //     arrows: true,
+    //     infinite: false,
+    //     speed: 300,
+    //     slidesToShow: 6,
+    //     slidesToScroll: 6,
+    //     responsive: [
+    //         {
+    //         breakpoint: 1024,
+    //         settings: {
+    //             slidesToShow: 3,
+    //             slidesToScroll: 3,
+    //             infinite: true,
+    //             dots: true
+    //         }
+    //         },
+    //         {
+    //         breakpoint: 600,
+    //         settings: {
+    //             slidesToShow: 2,
+    //             slidesToScroll: 2
+    //         }
+    //         },
+    //         {
+    //         breakpoint: 480,
+    //         settings: {
+    //             slidesToShow: 1,
+    //             slidesToScroll: 1
+    //         }
+    //         }
+    //     ]
+    //     });
+
+
+
+
+
+
 
 //Declare firebase obj. 
 var config = {
@@ -57,6 +63,10 @@ var latLongArr = [];
 
 // searchResultID is set to 0 in the DB initially. We retreive that value once on page load and again anytime the value is updated. 
 database.ref("aSearchResultCounter").on("value", function(snapshot){
+
+    // slickThing();
+
+    $("#cardContainer").empty();
   
     console.log(map); 
 
@@ -72,6 +82,9 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
     // Then: capture the lat and long values, push those values to the latLongArr 
     // So: 
 
+    // var cardContainer = $('<div class=" body-scroll multiple-items" id="cardContainer">');
+    
+
     // Listening for children on the current ID. This will fire once for each child added, so it's kind of working like a loop. This is good.
     database.ref("searchResult-" + searchResultID).on("child_added", function(snapshot){
 
@@ -80,6 +93,8 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
 
         //Declare object that will temp. store the search item from firebase
         var searchItem = {};
+
+        
         
         database.ref("searchResult-" + searchResultID + "/" + key).on("value", function(snapshot){
             
@@ -110,9 +125,14 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
         //Here we fetch the event information for each of the search items 
         database.ref()
 
+        
+
         //Now we render the event info on the page
         // Please try not to cringe at the sight to this code
-        var flipContainer = $('<div class="flipContainer item">');
+
+        
+
+        var flipContainer = $('<div class="flipContainer item"></br>');
 
         var flipperClass = $('<div class="flipper">');
 
@@ -122,10 +142,10 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
 
         var evtList = $('<ul class="list-style">');
 
-        var evtName = $('<li>' + searchItem.name + '</li>');
-        var evtVenue = $('<li>' + searchItem.venue + '<li>')
-        var evtDate = $('<li>' + searchItem.date  + '</li>'); 
-        var evtTicketsAt = $('<li>' + searchItem.ticketsStart + '</li>;');
+        var evtName = $('<li> Event Name: ' + searchItem.name + '</li>');
+        var evtVenue = $('<li> Venue: ' + searchItem.venue + '</li>')
+        var evtDate = $('<li> Date: ' + searchItem.date  + '</li>'); 
+        var evtTicketsAt = $('<li> Starting Tickets: ' + searchItem.ticketsStart + '</li>;');
         var evtBuyTics = $('<button><a href="'  + searchItem.buyTickets + '">Buy Tickets!</a></button');
 
         $(evtList).append(evtName, evtVenue, evtDate, evtTicketsAt, evtBuyTics);
@@ -141,6 +161,48 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
         $("#cardContainer").append(flipContainer); 
 
     })
+
+    function slickInit(){
+        $("#cardContainer").slick({
+            dots: true,
+            arrows: true,
+            infinite: false,
+            speed: 300,
+            slidesToShow: 6,
+            slidesToScroll: 6,
+            slide: ".list-panel", 
+            responsive: [
+                {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 3,
+                    infinite: true,
+                    dots: true
+                }
+                },
+                {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 2
+                }
+                },
+                {
+                breakpoint: 480,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+                }
+            ]
+            })
+        
+        console.log("I'm here.")
+
+    }
+
+    slickInit();    
 
 })
 
@@ -263,7 +325,7 @@ $("#search-button").on("click", function(event){
         
         //Set the incremented ID in the DB
         database.ref("aSearchResultCounter").set(searchResultID); 
-        
+
     })   
 })
 

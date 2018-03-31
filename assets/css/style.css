@@ -5,6 +5,10 @@
   width: 100%; 
 }
 
+body {
+  height: 100%; 
+}
+
 /* Home Screen */
 .main-body{  
 /* color: #f35626; */
