@@ -71,14 +71,10 @@ $("#search-button").on("click", function(event){
             var venue = events[i]._embedded.venues[0].name;
             var date = events[i].dates.start.localDate;
             var buyTickets = events[i].url; 
+
             var image = events[i].images[0].url; 
             var lat = events[i]._embedded.venues[0].location.latitude;
             var long = events[i]._embedded.venues[0].location.longitude;
-
-            if (events[i].name == undefined) {
-                console.log("I'm here.")
-            }
-            
 
             // This info doesn't exit for all returns. Capture it, if the current return does. Error will throw otherwise. 
             if (events[i].priceRanges) {
