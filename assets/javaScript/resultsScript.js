@@ -53,10 +53,11 @@ var database = firebase.database();
 var searchResultID; 
 
 // Declare empty latLongArr, this is what will be passed into the addMarker function
-var latLongArr = []; 
+var latLongArr = [];
+var nameVenueDate = [];
 
 // searchResultID is set to 0 in the DB initially. We retreive that value once on page load and again anytime the value is updated. 
-database.ref("aSearchResultCounter").on("value", function(snapshot){
+database.ref("aSearchResultCounter").on("value", function(snapshot) {
   
     searchResultID = snapshot.val();  
     console.log("Current search result ID: " + searchResultID); 
@@ -66,7 +67,7 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
     // So: 
 
     // Listening for children on the current ID. This will fire once for each child added, so it's kind of working like a loop. This is good.
-    database.ref("searchResult-" + searchResultID).on("child_added", function(snapshot){
+    database.ref("searchResult-" + searchResultID).on("child_added", function(snapshot) {
 
         // Capture unique name of the search item
         var key = snapshot.key; 
@@ -87,8 +88,6 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
             console.log("Snap Val: " + snapshot.name); 
             
             var searchItem = new Item();
-            
-
         })
         
         var buyTickets = database.ref('searchResult-' + searchResultID + "/" + key); 
@@ -101,11 +100,17 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
         // Capture the file path of the latitude and longitude
         var latPath = database.ref('searchResult-' + searchResultID + "/" + key  + "/lat"); 
         var longPath =  database.ref('searchResult-' + searchResultID + "/" + key  + "/long");
+        var venPath = database.ref('searchResult-' + searchResultID + "/" + key  + "/venue");
+        var namePath = database.ref('searchResult-' + searchResultID + "/" + key  + "/name");
+        var datePath = database.ref('searchResult-' + searchResultID + "/" + key  + "/date");
 
         console.log(latPath); 
         //Declare variables to store each search item's lat and long values as they're fetched from Firebase 
         var fbLat; 
         var fbLong; 
+        var name; // These variables (naem, venue, date) will be use for the markers
+        var venue;
+        var date; 
 
         //Fetch the current search item's lat and long values, convert them from strings to floats 
         latPath.on("value", function(snapshot){
@@ -115,14 +120,37 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
             fbLong = parseFloat(snapshot.val()); 
         })
 
+        // Getting other values to use for markers
+        venPath.on("value", function(snapshot) {
+            venue = snapshot.val();
+        })
+        namePath.on("value", function(snapshot) {
+            name = snapshot.val();
+        })
+        datePath.on("value", function(snapshot) {
+            date = snapshot.val();
+        })
+
+
         //Update the array that will be passed into the function that renders the markers 
         latLongArr.push({lat: fbLat, lng: fbLong})
-        console.log(latLongArr); 
+        console.log(latLongArr);
+        
+        // Update array with Name, venue, and date for markers
+        nameVenueDate.push({name: name, venue: venue, date: date});
+        console.log(nameVenueDate)
+        console.log(nameVenueDate[0].name)
+        console.log(nameVenueDate[0].venue)
+        console.log(nameVenueDate[0].date)
 
         // Call the addMarker function once with each search item's coordinates 
         for (var i = 0; i < latLongArr.length; i++) {
             addMarker(map, latLongArr[i])
             }
+
+        for (var i = 0; i < nameVenueDate; i++) {
+            addMarker(map, nameVenueDate[i])
+        }
 
         //Here we fetch the event information for each of the search items 
         database.ref()
@@ -148,13 +176,19 @@ var initMap = function(position, json) {
 };
 
 function addMarker(map, latLongArr) {
+    var html = "<div><strong>" + nameVenueDate.name + "</strong><br> Venue: " + nameVenueDate.venue + "<br> Date: " + nameVenueDate.date + "</div>"; // this is created for the markers when clicked, will display what event it is
     var marker = new google.maps.Marker({
         position: new google.maps.LatLng(latLongArr),
         map: map
     });
     marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
-    // console.log(marker);
-    };
+
+    var infowindow = new google.maps.InfoWindow();
+    google.maps.event.addListener(marker, "click", function() {
+        infowindow.setContent(html);
+        infowindow.open(map, this);
+    });
+};
 
 
 //Click event for the main button on the landing page 
