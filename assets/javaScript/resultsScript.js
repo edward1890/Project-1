@@ -1,38 +1,37 @@
 //Code that runs the carosel
-    // $("#cardContainer").slick({
-    //     dots: true,
-    //     arrows: true,
-    //     infinite: false,
-    //     speed: 300,
-    //     slidesToShow: 6,
-    //     slidesToScroll: 6,
-    //     responsive: [
-    //         {
-    //         breakpoint: 1024,
-    //         settings: {
-    //             slidesToShow: 3,
-    //             slidesToScroll: 3,
-    //             infinite: true,
-    //             dots: true
-    //         }
-    //         },
-    //         {
-    //         breakpoint: 600,
-    //         settings: {
-    //             slidesToShow: 2,
-    //             slidesToScroll: 2
-    //         }
-    //         },
-    //         {
-    //         breakpoint: 480,
-    //         settings: {
-    //             slidesToShow: 1,
-    //             slidesToScroll: 1
-    //         }
-    //         }
-    //     ]
-    //     });
-});
+    $("#cardContainer").slick({
+        dots: true,
+        arrows: true,
+        infinite: false,
+        speed: 300,
+        slidesToShow: 6,
+        slidesToScroll: 6,
+        responsive: [
+            {
+            breakpoint: 1024,
+            settings: {
+                slidesToShow: 3,
+                slidesToScroll: 3,
+                infinite: true,
+                dots: true
+            }
+            },
+            {
+            breakpoint: 600,
+            settings: {
+                slidesToShow: 2,
+                slidesToScroll: 2
+            }
+            },
+            {
+            breakpoint: 480,
+            settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1
+            }
+            }
+        ]
+        });
 
 //Declare firebase obj. 
 var config = {
@@ -58,27 +57,14 @@ var latLongArr = [];
 
 // searchResultID is set to 0 in the DB initially. We retreive that value once on page load and again anytime the value is updated. 
 database.ref("aSearchResultCounter").on("value", function(snapshot){
-
-    // slickThing();
-
-    $("#cardContainer").empty();
+    // Empty any previous results
+    
   
-    console.log(map); 
-
     // Clear map on new search
     clearMarkers();
 
-    console.log(latLongArr);    
-
     searchResultID = snapshot.val();  
     console.log("Current search result ID: " + searchResultID); 
-    // Retrieve keys for each of the search items
-    // Then: listen for when an item is created 
-    // Then: capture the lat and long values, push those values to the latLongArr 
-    // So: 
-
-    // var cardContainer = $('<div class=" body-scroll multiple-items" id="cardContainer">');
-    
 
     // Listening for children on the current ID. This will fire once for each child added, so it's kind of working like a loop. This is good.
     database.ref("searchResult-" + searchResultID).on("child_added", function(snapshot){
@@ -89,8 +75,7 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
         //Declare object that will temp. store the search item from firebase
         var searchItem = {};
 
-        
-        
+        //Hit the database for the event information and store that in the object declared above. 
         database.ref("searchResult-" + searchResultID + "/" + key).on("value", function(snapshot){
             
             searchItem.name = snapshot.val().name; 
@@ -106,7 +91,7 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
         })
 
         //Test to confirm object built correctly 
-        console.log("The cur. sear" +   searchItem); 
+        console.log("The cur. search" +   searchItem); 
 
         //Update the array that will be passed into the function that renders the markers 
         latLongArr.push({lat: searchItem.lat, lng: searchItem.long})
@@ -117,16 +102,8 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
             addMarker(map, latLongArr[i])
             }
 
-        //Here we fetch the event information for each of the search items 
-        database.ref()
-
-        
-
         //Now we render the event info on the page
         // Please try not to cringe at the sight to this code
-
-        
-
         var flipContainer = $('<div class="flipContainer item"></br>');
 
         var flipperClass = $('<div class="flipper">');
@@ -136,11 +113,11 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
         var back = $('<div class="back">'); 
 
         var evtList = $('<ul class="list-style">');
-
         var evtName = $('<li> Event Name: ' + searchItem.name + '</li>');
         var evtVenue = $('<li> Venue: ' + searchItem.venue + '</li>')
         var evtDate = $('<li> Date: ' + searchItem.date  + '</li>'); 
         var evtTicketsAt = $('<li> Starting Tickets: ' + searchItem.ticketsStart + '</li>;');
+
         var evtBuyTics = $('<button><a href="'  + searchItem.buyTickets + '">Buy Tickets!</a></button');
 
         $(evtList).append(evtName, evtVenue, evtDate, evtTicketsAt, evtBuyTics);
@@ -157,6 +134,7 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
 
     })
 
+    // This is defined here in an effort to have the slick method apply to dynamically created elements. This function isn't being called. 
     function slickInit(){
         $("#cardContainer").slick({
             dots: true,
@@ -197,14 +175,14 @@ database.ref("aSearchResultCounter").on("value", function(snapshot){
 
     }
 
-    slickInit();    
+    //Here is the attempt to initialize the slick method where it ought to be. Not sure why this isn't resulting in the desired output.
+    // slickInit();    
 
 })
 
-//This is janky. It'll need to be refactored in a way that deals with the initMap function's invocation
-//  denver; 
+// Mapping logic 
 var map; 
-//Why is this being executed?
+
 // Initialize Google map 
 initMap = function(position, json) {
     var denver = {lat: 39.739234, lng: -104.984796};
@@ -214,17 +192,16 @@ initMap = function(position, json) {
     });
 };
 
+//Function to plot lat/long coordinates
 function addMarker(map, latLongArr) {
     var marker = new google.maps.Marker({
         position: new google.maps.LatLng(latLongArr),
         map: map
     });
     marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
-    // console.log(marker);
     };
 
 //Clear function
-// Currently not doing anything 
 function clearMarkers() {
     for(var i = 0; i < latLongArr.length; i++){
         latLongArr[i] = null;
@@ -236,15 +213,10 @@ function clearMarkers() {
 
 //Click event for the main button on the landing page 
 $("#search-button").on("click", function(event){ 
-    // Markers are cleared from the map with every new search 
-    // function clearMarkers(){
-    //     emptyArr = []; 
-    //     addMarker(map, emptyArr); 
-    // };  
-
-    // clearMarkers(); 
 
     event.preventDefault(); 
+
+    
     
     //Capture input string 
     var keyword = $("#search-text").val().trim(); 
@@ -320,6 +292,8 @@ $("#search-button").on("click", function(event){
         
         //Set the incremented ID in the DB
         database.ref("aSearchResultCounter").set(searchResultID); 
+
+        $("#cardContainer").empty();
 
     })   
 })
