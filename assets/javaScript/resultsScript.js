@@ -134,15 +134,21 @@ initMap = function(position, json) {
 };
 
 function addMarker(map, latLongArr) {
-    var html = "<div><strong>" + nameVenueDate[0].name + "</strong><br> Venue: " + nameVenueDate[0].venue + "<br> Date: " + nameVenueDate[0].date + "</div>";
+    // var html = "<div><strong>" + nameVenueDate[0].name + "</strong><br> Venue: " + nameVenueDate[0].venue + "<br> Date: " + nameVenueDate[0].date + "</div>";
+    for (var i = 0; i < nameVenueDate.length; i++) {
+            console.log(nameVenueDate[i])
+            var html = "<div><strong>" + nameVenueDate[i].name + "</strong><br> Venue: " + nameVenueDate[i].venue + "<br> Date: " + nameVenueDate[i].date + "</div>";
+            }
+    // console.log(nameVenueDate)
     var marker = new google.maps.Marker({
         position: new google.maps.LatLng(latLongArr),
-        map: map
+        map: map,
     });
     marker.setIcon('http://maps.google.com/mapfiles/ms/icons/red-dot.png');
 
     var infowindow = new google.maps.InfoWindow();
     google.maps.event.addListener(marker, "click", function() {
+        
         infowindow.setContent(html);
         infowindow.open(map, this);
     });
@@ -155,6 +161,7 @@ function clearMarkers() {
         latLongArr[i] = null;
     }
     latLongArr.length = 0;
+    addMarker(map, latLongArr);
 };
 
 
