@@ -195,8 +195,8 @@ h5 {
     }
 
   .flipContainer, .front, .back {
-    width: 175px;
-    height: 200px;
+    width: 150px;
+    height: 175px;
     border-radius: 5px;
   }
 
@@ -217,7 +217,7 @@ h5 {
   .front{
     z-index: 2;
     transform: rotateY(0deg);
-    background-image: url(images/CupDzZRWYAIUM4m.jpg);
+    /* background-image: url(images/CupDzZRWYAIUM4m.jpg); */
     background-size: cover;   
   } 
 
@@ -355,7 +355,10 @@ h5 {
     padding: 25px;
     font-family: 'Rajdhani', sans-serif;
     font-weight: bold;
+    word-wrap: break-word;
+    font-size: 75%;
   }
+ 
   @media only screen and (max-width: 600px) {
     .main-title {
       color: #f35626;
@@ -399,5 +402,8 @@ h5 {
         width: 200px;
         margin-left:auto;
         margin-right:auto;
+      }
+      .list-style {
+        font-size: 40%;
       }
 }
