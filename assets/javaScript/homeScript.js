@@ -17,17 +17,23 @@ var database = firebase.database();
 // searchResultID is used to child nodes in the DB
 var searchResultID; 
 // searchResultID is set to 0 in the DB, initially. We retreive that value on page load.
-database.ref("aSearchResultCounter").on("value", function(snapshot){
-    searchResultID = snapshot.val(); 
-    console.log(searchResultID); 
+$(document).ready(function(){
+    database.ref("aSearchResultCounter").on("value", function(snapshot){
+        searchResultID = snapshot.val(); 
+        console.log("cur search reasult: " + searchResultID); 
+    })
 })
-
 
 //Click event for the main button on the landing page 
 $("#search-button").on("click", function(event){ 
 
+    event.preventDefault();
+
     //Capture input string 
     var keyword = $("#search-text").val().trim(); 
+    console.log("keyword: " + keyword)
+
+    console.log(typeof keyword); 
 
     //Pass that string as the keyword into the query url. We're also using a proxy to side step CORS error. This will be removed when we go live. 
     var queryURL = "https://thingproxy.freeboard.io/fetch/" + "https://app.ticketmaster.com/discovery/v2/events.json?apikey=RoDgdYM6hvCYQYDMGjOgTU0jJBvdaXIg&city=denver&stateCode=CO&radius=50&keyword=" + keyword;
@@ -42,11 +48,20 @@ $("#search-button").on("click", function(event){
     //Make the ajax call
     $.ajax({
         method: "GET", 
-        url: queryURL
+        url: queryURL,
+        error: function (){
+            console.log("I'm here.")
+        }
     }).then(function(response){
+
+        if (response._embedded.events == undefined) {
+            console.log("I'm here.")
+        }
         // Capture the part of the API results that contain the values we're looking for 
         var events = response._embedded.events;
         console.log(events)
+
+       
 
         //Loop through these results, capture the values of interest, declare an object w/ those values and pass that object into the Firebase push method (sending them up to the DB)
         for (var i = 0; i < events.length; i++) {
@@ -56,11 +71,10 @@ $("#search-button").on("click", function(event){
             var venue = events[i]._embedded.venues[0].name;
             var date = events[i].dates.start.localDate;
             var buyTickets = events[i].url; 
-            var image = events[i].images[1].url; 
+
+            var image = events[i].images[0].url; 
             var lat = events[i]._embedded.venues[0].location.latitude;
-            latArray.push(lat);
             var long = events[i]._embedded.venues[0].location.longitude;
-            longArray.push(long); 
 
             // This info doesn't exit for all returns. Capture it, if the current return does. Error will throw otherwise. 
             if (events[i].priceRanges) {
@@ -121,12 +135,9 @@ $("#search-button").on("click", function(event){
         
         // Direct user to the results page 
         location.assign("index.html"); 
-
-        console.log("I'm here.")
     })   
 
     
 
 })
-
 
