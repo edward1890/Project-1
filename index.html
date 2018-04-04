@@ -2,113 +2,70 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-  <link rel="stylesheet" type="text/css" href="assets/css/slick/slick.css" />
-  <link rel="stylesheet" type="text/css" href="assets/css/slick/slick-theme.css" />
-  <link rel="stylesheet" type="text/css" href="assets/css/animate.css" />
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
- <link href="https://fonts.googleapis.com/css?family=Bungee+Shade" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
- 
-  <title>Results Page</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+       
+        <link rel="stylesheet" type="text/css" href="assets/css/animate.css" />
+        <link rel="stylesheet" href="assets/css/style.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Rajdhani" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Bungee+Shade" rel="stylesheet">
+        <title>Local Show</title>
 </head>
 
 <body>
-<div class="m-scene scene-element scene-element--fadeInRight" id="main">
 
-  <div class="main-body ">
 
-      <nav class="navbar navbar-inverse">
+        <body>
+        <div class="container theme showcase">
+                <div class="jumbotron text-center">
+                        <div class="main-title animated fadeInDown text-center">LocalShow</div>
+                        
+                
+                        <div>
+                                <div class="panel-body">
+                                        <div class="input-group  ">
+                                                <input type="text" class="form-control event-search" id="search-text" placeholder="Search for...">
+                                                <span class="input-group-btn ">
+                                                        <button class="btn btn-default" role="button" id="search-button">Search</button>
+                                                </span>
+                                        </div>
+                                </div>
+
+                        </div>
+                        <span>
+                                
+                                <p class="description text-center">Helping you find your favorite local event.</p>
+
+                        </span>
+                </div>
+        </div>                
+     
+
+<nav class="navbar navbar-default navbar-fixed-bottom" id="footer">
         <div class="container-fluid">
-
-          <div class="navbar-header ">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-              aria-expanded="false">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand nav-logo" href="Home.html">LocalShow</a>
-          </div>
-
-          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <form class="navbar-form navbar-left">
-              <div class="form-group">
-                <input type="text" class="form-control" id="search-text" placeholder="Search">
-              </div>
-              <button type="submit" class="btn btn-default" id="search-button">Submit</button>
-            </form>
-            <ul class="nav navbar-nav navbar-right">
-              <li>
-                <a href="Home.html">Home</a>
-              </li>
-            </ul>
-          </div>
-          <!-- /.navbar-collapse -->
-
-        </div>
-        <!-- /.container-fluid -->
-      </nav>
-
-      <div class="map">
-        <div class="col-md-7  map-panel ">
-          <div class="panel panel-default ">
-            <div class="panel-body " id="map-location">
-              <!-- GENERATED MAP LOCATION HERE -->
-              <!-- <div class="text-center">
+                <div class="navbar-header">
+                <h5>Team Kwee</h5>
+                </div>
+                <p class="copyright">Denver Grown. Copyright@2018</p>
               
-              </div> -->
-            </div>
-          </div>
         </div>
-      </div>
-
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-1"></div>
-          <div class="col-sm-12">
-            <div class="list-panel">
-              <div class=" body-scroll multiple-items" id="cardContainer">
-
-                <!-- Cards will dynamically appended here.  -->
-
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <nav class="navbar navbar-default navbar-fixed-bottom" id="footer">
-          <div class="container-fluid">
-                  <div class="navbar-header">
-                  <h5>Team Kwee</h5>
-                  </div>
-                  <p class="copyright">Copyright@2018</p>
-                  
-          </div>
-          </nav>
-
-  </div>
-
-  
-    
-</div>
-</div>
-
-<!-- Animation scripts -->
+</nav>
+        
+        
+        
+       
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
 <script type="text/javascript" src="assets/javaScript/smoothState.js-master/jquery.smoothState.min.js"></script>
-<script type="text/javascript" src="assets/javaScript/slick/slick.min.js"></script>
-<script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB2w2Z0XxrOtqNiuXnheoco3l0Rq2_1Bhc&callback=initMap">
-</script>
-<script src="assets/javaScript/resultsScript.js"></script>
 
+<script type="text/javascript" src="assets/javaScript/slick/slick.min.js"></script>
+<script type="text/javascript" src="assets/javaScript/smoothState.js-master/jquery.smoothState.min.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/4.12.0/firebase.js"></script>
+<script src="assets/javaScript/homeScript.js"></script>
+</script>
 </body>
+
 </html>

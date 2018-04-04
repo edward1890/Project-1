@@ -134,7 +134,7 @@ $("#search-button").on("click", function(event){
         database.ref("aSearchResultCounter").set(searchResultID); 
         
         // Direct user to the results page 
-        location.assign("index.html"); 
+        location.assign("results.html"); 
     })   
 
     
