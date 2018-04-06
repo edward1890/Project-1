@@ -222,7 +222,8 @@ $("#search-button").on("click", function(event){
 
     event.preventDefault(); 
 
-    $("#cardContainer").empty(); 
+    // $("#cardContainer").empty();
+
     
     //Capture input string 
     var keyword = $("#search-text").val().trim(); 
@@ -236,7 +237,11 @@ $("#search-button").on("click", function(event){
 
     } else {
 
-        
+
+        //Set the incremented ID in the DB
+        database.ref("aSearchResultCounter").set(searchResultID); 
+      
+        location.reload();
 
         //Pass that string as the keyword into the query url. We're also using a proxy to side step CORS error. This will be removed when we go live. 
         var queryURL = "https://thingproxy.freeboard.io/fetch/" + "https://app.ticketmaster.com/discovery/v2/events.json?apikey=RoDgdYM6hvCYQYDMGjOgTU0jJBvdaXIg&city=denver&stateCode=CO&radius=50&keyword=" + keyword;
