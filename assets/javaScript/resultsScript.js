@@ -1,38 +1,3 @@
-//Code that is supposed to run the carosel, but doesn't in any kind of satisfactory way. 
-    // $("#cardContainer").slick({
-    //     dots: true,
-    //     arrows: true,
-    //     infinite: false,
-    //     speed: 300,
-    //     slidesToShow: 6,
-    //     slidesToScroll: 6,
-    //     responsive: [
-    //         {
-    //         breakpoint: 1024,
-    //         settings: {
-    //             slidesToShow: 3,
-    //             slidesToScroll: 3,
-    //             infinite: true,
-    //             dots: true
-    //         }
-    //         },
-    //         {
-    //         breakpoint: 600,
-    //         settings: {
-    //             slidesToShow: 2,
-    //             slidesToScroll: 2
-    //         }
-    //         },
-    //         {
-    //         breakpoint: 480,
-    //         settings: {
-    //             slidesToShow: 1,
-    //             slidesToScroll: 1
-    //         }
-    //         }
-    //     ]
-    //     });
-
 //Declare firebase obj. 
 var config = {
     apiKey: "AIzaSyB2w2Z0XxrOtqNiuXnheoco3l0Rq2_1Bhc",
@@ -237,12 +202,6 @@ $("#search-button").on("click", function(event){
 
     } else {
 
-
-        //Set the incremented ID in the DB
-        database.ref("aSearchResultCounter").set(searchResultID); 
-      
-        location.reload();
-
         //Pass that string as the keyword into the query url. We're also using a proxy to side step CORS error. This will be removed when we go live. 
         var queryURL = "https://thingproxy.freeboard.io/fetch/" + "https://app.ticketmaster.com/discovery/v2/events.json?apikey=RoDgdYM6hvCYQYDMGjOgTU0jJBvdaXIg&city=denver&stateCode=CO&radius=50&keyword=" + keyword;
         
@@ -255,6 +214,8 @@ $("#search-button").on("click", function(event){
 
         //Clear input field on each search
         $("input").val('');
+
+        
 
         //Make the ajax call
         $.ajax({
@@ -315,13 +276,11 @@ $("#search-button").on("click", function(event){
             
             //Set the incremented ID in the DB
             database.ref("aSearchResultCounter").set(searchResultID); 
+
+            location.reload();            
            
-            
-
         })   
-
     }
-
 })
 
 
